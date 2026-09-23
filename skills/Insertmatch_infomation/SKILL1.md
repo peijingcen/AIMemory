@@ -1,0 +1,28 @@
+CREATE TABLE football_match_results (
+    id                    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID，自增',
+    match_type_keyword_id BIGINT NOT NULL COMMENT '比赛类型关键词ID，关联 keywords.id',
+    home_team_keyword_id  BIGINT NOT NULL COMMENT '主队名称关键词ID，关联 keywords.id',
+    away_team_keyword_id  BIGINT NOT NULL COMMENT '客队名称关键词ID，关联 keywords.id',
+    season_keyword_id     BIGINT NOT NULL COMMENT '赛季名称关键词ID，关联 keywords.id',
+    seasonround           TINYINT UNSIGNED DEFAULT NULL COMMENT '轮次',
+    match_at              DATETIME NOT NULL COMMENT '比赛日期时间',
+    home_win_odds         DECIMAL(10,4) NOT NULL DEFAULT 0.0000 COMMENT '主队胜赔率，保留4位小数',
+    draw_odds             DECIMAL(10,4) NOT NULL DEFAULT 0.0000 COMMENT '平局赔率，保留4位小数',
+    away_win_odds         DECIMAL(10,4) NOT NULL DEFAULT 0.0000 COMMENT '客队胜赔率，保留4位小数',
+    home_ft_goals         TINYINT UNSIGNED NOT NULL COMMENT '主队全场进球数，通常不超过100',
+    away_ft_goals         TINYINT UNSIGNED NOT NULL COMMENT '客队全场进球数，通常不超过100',
+    home_ht_goals         TINYINT UNSIGNED NOT NULL COMMENT '主队半场进球数，通常不超过100',
+    away_ht_goals         TINYINT UNSIGNED NOT NULL COMMENT '客队半场进球数，通常不超过100',
+    created_at            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
+    updated_at            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
+    str1                  VARCHAR(64) DEFAULT NULL COMMENT '扩展字段1',
+    str2                  VARCHAR(64) DEFAULT NULL COMMENT '扩展字段2',
+    str3                  VARCHAR(64) DEFAULT NULL COMMENT '扩展字段3',
+    INDEX idx_fmr_match_at (match_at) COMMENT '按比赛时间排序/筛选',
+    INDEX idx_fmr_match_type (match_type_keyword_id) COMMENT '按比赛类型筛选',
+    INDEX idx_fmr_home_team (home_team_keyword_id) COMMENT '按主队筛选',
+    INDEX idx_fmr_away_team (away_team_keyword_id) COMMENT '按客队筛选',
+    INDEX idx_fmr_season (season_keyword_id) COMMENT '按赛季筛选',
+    INDEX idx_fmr_season_match_at (season_keyword_id, match_at) COMMENT '按赛季+时间排序/筛选'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  COMMENT='足球比赛成绩记录表';  根据表结构，需要把提供的json 的数据插入到此表中去。  其中stime 对应 match_at，hname对应str1 ， gname对应str2 ，每轮的编号对应seasonround， hscore对应home_ft_goals， hhalfscore对应home_ht_goals，gscore对应away_ft_goals， ghalfscore对应away_ht_goals, match_at，home_win_odds, draw_odds, away_win_odds 根据上述任务，做成SQL的插入语句
