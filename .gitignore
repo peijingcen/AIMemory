@@ -1,0 +1,9 @@
+# 忽略node_modules整个文件夹
+node_modules/
+
+# 下面这些是前端项目常用额外忽略，可一起复制
+dist/
+build/
+.env
+*.log
+.DS_Store
